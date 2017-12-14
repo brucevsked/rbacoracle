@@ -4,27 +4,27 @@
 <mapper namespace="com.vsked.dao.SysRoleMenuDao">
 
 	<select id="getHasSysRoleList" resultType="java.util.Map">
-		select * from sysRoleT 
-		a where a.srId in( 
-		select b.srId from sysRoleMenuT b where b.smId=#{smId})
+		select * from "sysRoleT" 
+		a where a."srId" in( 
+		select b."srId" from "sysRoleMenuT" b where b."smId"=#{smId})
 	</select>
 
 	<select id="getNoSysRoleList" resultType="java.util.Map">
-		select * from sysRoleT 
-		a where a.srId not in( 
-		select b.srId from sysRoleMenuT b where b.smId=#{smId})
+		select * from "sysRoleT" 
+		a where a."srId" not in( 
+		select b."srId" from "sysRoleMenuT" b where b."smId"=#{smId})
 	</select>
 	
 	<delete id="sysRoleMenuDelBySrId">
-		delete from sysRoleMenuT where srId=#{srId,jdbcType=VARCHAR}
+		delete from "sysRoleMenuT" where "srId"=#{srId,jdbcType=VARCHAR}
 	</delete>
 	
 	<delete id="sysRoleMenuDelBySmId">
-		delete from sysRoleMenuT where smId=#{smId,jdbcType=VARCHAR}
+		delete from "sysRoleMenuT" where "smId"=#{smId,jdbcType=VARCHAR}
 	</delete>
 	
 	<insert id="sysRoleMenuAdd">
-insert into sysRoleMenuT(srId,smId) 
+insert into "sysRoleMenuT"("srId","smId") 
 VALUES(#{srId,jdbcType=VARCHAR},#{smId,jdbcType=VARCHAR}) 
 	</insert>
 </mapper>

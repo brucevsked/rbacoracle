@@ -4,37 +4,37 @@
 <mapper namespace="com.vsked.dao.SysRoleDao">
 
 	<select id="getSysRoleBySrId" resultType="java.util.Map">
-		select * from sysRoleT where srId=#{srId}
+		select * from "sysRoleT" where "srId"=#{srId}
 	</select>
 	
 	<select id="getSysRoleCount" resultType="java.lang.Integer">
-		select count(0) from sysRoleT 
+		select count(0) from "sysRoleT" 
 		<include refid="myWhere" />
 	</select>
 	
 	<select id="getSysRoleList" resultType="java.util.Map">
-		select * from sysRoleT 
+		select * from "sysRoleT" 
 		<include refid="myWhere" />
-		ORDER BY srAddTime desc
+		ORDER BY "srAddTime" desc
 	</select>
 	
 	<insert id="sysRoleAdd" >
-	  <selectKey keyProperty="myuuid" resultType="String" order="BEFORE">select replace(uuid(), '-', '') as myuuid</selectKey> 
-	  insert into sysRoleT(srId,srName) VALUES(#{myuuid,jdbcType=VARCHAR},#{srName,jdbcType=VARCHAR})
+	  <selectKey keyProperty="myuuid" resultType="String" order="BEFORE">select rawtohex(sys_guid()) as "myuuid" from dual</selectKey> 
+	  insert into "sysRoleT"("srId","srName") VALUES(#{myuuid,jdbcType=VARCHAR},#{srName,jdbcType=VARCHAR})
 	</insert>
 	
 	<update id="sysRoleEdit">
-	  update sysRoleT set srName=#{srName,jdbcType=VARCHAR} where srId=#{srId,jdbcType=VARCHAR}
+	  update "sysRoleT" set "srName"=#{srName,jdbcType=VARCHAR} where "srId"=#{srId,jdbcType=VARCHAR}
 	</update>
 	
     <delete id="sysRoleDel">
-      delete from sysRoleT where srId=#{srId,jdbcType=VARCHAR}
+      delete from "sysRoleT" where "srId"=#{srId,jdbcType=VARCHAR}
     </delete>
     
 	<sql id="myWhere">
 		<where>
 			<if test="srName !=null and srName != '' ">
-				and srName like  concat('%',#{srName,jdbcType=VARCHAR},'%') 
+				and "srName" like  '%' || #{srName,jdbcType=VARCHAR} || '%' 
 			</if>
 		</where>
 	</sql>

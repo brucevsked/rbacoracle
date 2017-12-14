@@ -4,46 +4,46 @@
 <mapper namespace="com.vsked.dao.SysOrganizeDao">
 
 	<select id="getSysOrganizeCount" resultType="java.lang.Integer">
-		select count(0) from sysOrganizeT a1 left join sysOrganizeT b1 on a1.parentSoId=b1.soId 
+		select count(0) from "sysOrganizeT" a1 left join "sysOrganizeT" b1 on a1."parentSoId"=b1."soId" 
 		<include refid="myWhere" />
 	</select>
 	
 	<select id="getSysOrganizeList" resultType="java.util.Map">
-		select a1.*,b1.soName soName1 from sysOrganizeT a1 left join sysOrganizeT b1 on a1.parentSoId=b1.soId 
+		select a1.*,b1."soName" "soName1" from "sysOrganizeT" a1 left join "sysOrganizeT" b1 on a1."parentSoId"=b1."soId" 
 		<include refid="myWhere" />
-		order by a1.soAddTime desc 
+		order by a1."soAddTime" desc 
 	</select>
 	
 	<select id="getSysOrganizeListAll" resultType="java.util.Map">
-    select soId as "id",soName as "name",parentSoId as "parentId" from sysOrganizeT
+    select "soId" as "id","soName" as "name","parentSoId" as "parentId" from "sysOrganizeT"
 	</select>
 	
 	<select id="getSysOrganizeBySoId" resultType="java.util.Map">
-		select * from sysOrganizeT where soId=#{soId,jdbcType=VARCHAR}
+		select * from "sysOrganizeT" where "soId"=#{soId,jdbcType=VARCHAR}
 	</select>
 	
 	<insert id="sysOrganizeAdd" >
-	<selectKey keyProperty="myuuid" resultType="String" order="BEFORE">select replace(uuid(), '-', '') as myuuid</selectKey>
-	  insert into sysOrganizeT(soId,soName,soCode,soSort,parentSoId) 
+	<selectKey keyProperty="myuuid" resultType="String" order="BEFORE">select rawtohex(sys_guid()) as "myuuid" from dual</selectKey>
+	  insert into "sysOrganizeT"("soId","soName","soCode","soSort","parentSoId") 
 	  VALUES(#{myuuid,jdbcType=VARCHAR},#{soName,jdbcType=VARCHAR},#{soCode,jdbcType=VARCHAR},
 	  #{soSort},#{parentSoId,jdbcType=VARCHAR})
 	</insert>
 	
 	<update id="sysOrganizeEdit">
-	update sysOrganizeT set soName=#{soName,jdbcType=VARCHAR},soCode=#{soCode,jdbcType=VARCHAR},
-	soSort=#{soSort},parentSoId=#{parentSoId,jdbcType=VARCHAR} where soId=#{soId,jdbcType=VARCHAR} 	 
+	update "sysOrganizeT" set "soName"=#{soName,jdbcType=VARCHAR},"soCode"=#{soCode,jdbcType=VARCHAR},
+	"soSort"=#{soSort},"parentSoId"=#{parentSoId,jdbcType=VARCHAR} where "soId"=#{soId,jdbcType=VARCHAR} 	 
 	</update>
 	
     <sql id="myWhere">
     <where>
 		<if test="soName !=null and soName != '' ">
-		and a1.soName like concat('%',#{soName,jdbcType=VARCHAR},'%') 
+		and a1."soName" like  '%' || #{soName,jdbcType=VARCHAR} || '%' 
 		</if>
 		<if test="soCode !=null and soCode != '' ">
-		and a1.soCode like concat('%',#{soCode,jdbcType=VARCHAR},'%') 
+		and a1.soCode like  '%' || #{soCode,jdbcType=VARCHAR} || '%' 
 		</if>
 		<if test="soName1 !=null and soName1 != '' ">
-		and b1.soName like concat('%',#{soName1,jdbcType=VARCHAR},'%') 
+		and b1."soName" like  '%' || #{soName1,jdbcType=VARCHAR} || '%' 
 		</if>
     </where>
     </sql>

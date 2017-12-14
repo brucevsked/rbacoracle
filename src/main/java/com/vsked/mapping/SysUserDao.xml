@@ -4,48 +4,48 @@
 <mapper namespace="com.vsked.dao.SysUserDao">
 
 	<select id="getSysUserBySuName" resultType="java.util.Map">
-		select * from sysUserT where suName=#{suName,jdbcType=VARCHAR}
+		select * from "sysUserT" where "suName"=#{suName,jdbcType=VARCHAR}
 	</select>
 
 	<select id="getSysUserBySuId" resultType="java.util.Map">
-		select * from sysUserT where suId=#{suId}
+		select * from "sysUserT" where "suId"=#{suId}
 	</select>
 
 	<select id="getSysUserCount" resultType="java.lang.Integer">
-		select count(0) from sysUserT 
+		select count(0) from "sysUserT" 
 		<include refid="myWhere" />
 	</select>
 	<select id="getSysUserList" resultType="java.util.Map">
-		select * from sysUserT 
+		select * from "sysUserT" 
 		<include refid="myWhere" />
-		 ORDER BY suRegTime desc
+		 ORDER BY "suRegTime" desc
 	</select>
 	
 	<insert id="sysUserAdd" >
-	<selectKey keyProperty="myuuid" resultType="String" order="BEFORE">select replace(uuid(), '-', '') as myuuid</selectKey>
-	  insert into sysUserT(suId,suName,suNick,suPass,suMobile,suLastVisit) 
+	<selectKey keyProperty="myuuid" resultType="String" order="BEFORE">select rawtohex(sys_guid()) as "myuuid" from dual</selectKey>
+	  insert into "sysUserT"("suId","suName","suNick","suPass","suMobile","suLastVisit") 
 	  VALUES(#{myuuid,jdbcType=VARCHAR},#{suName,jdbcType=VARCHAR},#{suNick,jdbcType=VARCHAR},#{suPass,jdbcType=VARCHAR},#{suMobile,jdbcType=VARCHAR},sysdate)
 	</insert>
 	
 	<update id="sysUserEdit">
-	  update sysUserT set suNick=#{suNick,jdbcType=VARCHAR},suMobile=#{suMobile,jdbcType=VARCHAR} where suId=#{suId,jdbcType=VARCHAR}
+	  update "sysUserT" set "suNick"=#{suNick,jdbcType=VARCHAR},"suMobile"=#{suMobile,jdbcType=VARCHAR} where "suId"=#{suId,jdbcType=VARCHAR}
 	</update>
 	
 	<update id="sysUserPassChange">
-	  update sysUserT set suPass=#{suPass,jdbcType=VARCHAR} where suId=#{suId,jdbcType=VARCHAR}
+	  update "sysUserT" set "suPass"=#{suPass,jdbcType=VARCHAR} where "suId"=#{suId,jdbcType=VARCHAR}
 	</update>
 	
     <delete id="sysUserDel">
-      delete from sysUserT where suId=#{suId,jdbcType=VARCHAR}
+      delete from "sysUserT" where "suId"=#{suId,jdbcType=VARCHAR}
     </delete>
     
     <sql id="myWhere">
     <where>
-		<if test="suName !=null and suName != '' ">
-		and suName like concat('%',#{suName,jdbcType=VARCHAR},'%') 
+		<if test="suName  !=null and suName != '' ">
+		and "suName" like '%' || #{suName,jdbcType=VARCHAR} || '%'  
 		</if>
 		<if test="suNick !=null and suNick != '' ">
-		and suNick like concat('%',#{suNick,jdbcType=VARCHAR},'%') 
+		and "suNick" like '%' || #{suNick,jdbcType=VARCHAR} || '%' 
 		</if>
     </where>
     </sql>
