@@ -32,8 +32,8 @@ drop table "sysRoleT" ;
 drop table "sysPermissionT" ;
 drop table "sysUserT" ;
 drop table "sysMenuT";
-drop table ""sysDictionaryT"ypeT";
 drop table "sysDictionaryT";
+drop table "sysDictionaryTypeT";
 /********+*********+*********+*********+*********+*********+*/
 
 create table "sysOrganizeT"(
@@ -514,70 +514,78 @@ insert into "sysMenuT"("smId","smName","smHref","smClick","smClass","smDataOptio
 select * from "sysMenuT";
 /********+*********+*********+*********+*********+*********+*/
 create table "sysRoleMenuT"(
-"srId" nvarchar2(64)                                COMMENT '角色编号'            ,
-smId nvarchar2(64)                                COMMENT '菜单编号'            ,
-srmAddTime timestamp default sysdate  COMMENT '添加时间'           
+"srId" nvarchar2(64)                   , -- 角色编号
+"smId" nvarchar2(64)                   , -- 菜单编号
+"srmAddTime" timestamp default sysdate   -- 添加时间
 );
 
+comment on table  "sysRoleMenuT"                is '角色菜单表'      ;
+comment on column "sysRoleMenuT"."srId"         is '角色编号'        ;
+comment on column "sysRoleMenuT"."smId"         is '菜单编号'        ;
+comment on column "sysRoleMenuT"."srmAddTime"   is '添加时间'        ;
 
-alter table "sysRoleMenuT" add constraint pk_"sysRoleMenuT" primary key("srId",smId);
+alter table "sysRoleMenuT" add constraint pk_sysRoleMenuT primary key("srId","smId");
 
-alter table "sysRoleMenuT" add constraint fk_"sysRoleMenuT"_"srId" foreign key("srId") references "sysRoleT"("srId");
-alter table "sysRoleMenuT" add constraint fk_"sysRoleMenuT"_suId foreign key(smId) references "sysMenuT"(smId);
+alter table "sysRoleMenuT" add constraint fk_sysRoleMenuT_srId foreign key("srId") references "sysRoleT"("srId");
+alter table "sysRoleMenuT" add constraint fk_sysRoleMenuT_suId foreign key("smId") references "sysMenuT"("smId");
 
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','1');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_1');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_2');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_3');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_4');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_5');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_6');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_7');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_8');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_9');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_10');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_11');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_12');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_13');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_14');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_15');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_16');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_17');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','2_18');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','9');
-insert into "sysRoleMenuT"("srId",smId) VALUES('30000000000000000000000000000001','100');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','1');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_1');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_2');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_3');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_4');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_5');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_6');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_7');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_8');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_9');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_10');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_11');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_12');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_13');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_14');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_15');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_16');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_17');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','2_18');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','9');
+insert into "sysRoleMenuT"("srId","smId") VALUES('30000000000000000000000000000001','100');
 
 select * from "sysRoleMenuT";
 /********+*********+*********+*********+*********+*********+*/
 
-create table ""sysDictionaryT"ypeT"(
-sdtId nvarchar2(64)  primary key                 COMMENT '字典类型编号'    ,
-sdtName nvarchar2(64) unique not null            COMMENT '字典类型显示名'  ,
-sdtAddTime timestamp default sysdate COMMENT '添加时间'
+create table "sysDictionaryTypeT"(
+"sdtId" nvarchar2(64)  primary key       , -- 字典类型编号
+"sdtName" nvarchar2(64) unique not null  , -- 字典类型显示名
+"sdtAddTime" timestamp default sysdate     -- 添加时间
 );
 
+comment on table  "sysDictionaryTypeT"                  is '字典类型表'        ;
+comment on column "sysDictionaryTypeT"."sdtId"          is '字典类型编号'      ;
+comment on column "sysDictionaryTypeT"."sdtName"        is '字典类型名称'      ;
+comment on column "sysDictionaryTypeT"."sdtAddTime"     is '字典类型添加时间'  ;
 
-insert into ""sysDictionaryT"ypeT"(sdtId,sdtName) VALUES('"sysDictionaryT"ype000000000000001','性别');
-insert into ""sysDictionaryT"ypeT"(sdtId,sdtName) VALUES('"sysDictionaryT"ype000000000000002','号卡状态');
+insert into "sysDictionaryTypeT"("sdtId","sdtName") VALUES('10000000000000000000000000000001','性别');
+insert into "sysDictionaryTypeT"("sdtId","sdtName") VALUES('10000000000000000000000000000002','号卡状态');
 
-select * from ""sysDictionaryT"ypeT";
+select * from "sysDictionaryTypeT";
 /********+*********+*********+*********+*********+*********+*/
 
 create table "sysDictionaryT"(
-sdId nvarchar2(64)  primary key                 COMMENT '字典编号'        ,
-sdtId nvarchar2(64) not null                    COMMENT '字典类型编号'    ,
-sdName nvarchar2(64) unique not null            COMMENT '字典显示名'      ,
-sdValue nvarchar2(64)                           COMMENT '值'              ,
-sdSort number(10)                                    COMMENT '排序'            , 
-sdAddTime timestamp default sysdate COMMENT '添加时间'
+"sdId" nvarchar2(64)  primary key       , -- 字典编号
+"sdtId" nvarchar2(64) not null          , -- 字典类型编号
+"sdName" nvarchar2(64) unique not null  , -- 字典显示名
+"sdValue" nvarchar2(64)                 , -- 值
+"sdSort" number(10)                     , -- 排序
+"sdAddTime" timestamp default sysdate     -- 添加时间
 );
 
 
-alter table "sysDictionaryT" add constraint fk_"sysDictionaryT"_sdtId foreign key(sdtId) references ""sysDictionaryT"ypeT"(sdtId);
+alter table "sysDictionaryT" add constraint fk_sysDictionaryT_sdtId foreign key("sdtId") references "sysDictionaryTypeT"("sdtId");
 
-insert into "sysDictionaryT"(sdId,sdtId,sdName,sdValue,sdSort) VALUES('sysDictionary0000000000000000001','"sysDictionaryT"ype000000000000001','女','0',1);
-insert into "sysDictionaryT"(sdId,sdtId,sdName,sdValue,sdSort) VALUES('sysDictionary0000000000000000002','"sysDictionaryT"ype000000000000001','男','1',2);
+insert into "sysDictionaryT"("sdId","sdtId","sdName","sdValue","sdSort") VALUES('100000000000000000000000000000011','10000000000000000000000000000001','女','0',1);
+insert into "sysDictionaryT"("sdId","sdtId","sdName","sdValue","sdSort") VALUES('100000000000000000000000000000012','10000000000000000000000000000001','男','1',2);
 
 select * from "sysDictionaryT";
 /********+*********+*********+*********+*********+*********+*/
